@@ -76,14 +76,14 @@ query: [] ⊢ as(lam(x, var(x)), a → a) : Ty.
 /*
 Examples:
 
-term: λx. fst t
+term: λx. fst x
 query: [] ⊢ lam(x, fst(var(x))) : Ty.
 
-term: λx. fst (snd t)
+term: λx. fst (snd x)
 query: [] ⊢ lam(x, fst(snd(var(x)))) : Ty.
 */
 
-/* Sum Type */
+/* Sum Types */
 
 Γ ⊢ inl(T) : Ty1 + Ty2 :-
     Γ ⊢ T : Ty1.
@@ -201,8 +201,8 @@ Examples:
 
 term: fix lambda f. lambda x. if x < 0 || x == 0
                               then 1
-                              else f (x - 1)
-query: [] ⊢ fix(lam(f, lam(x, if(or(var(x)<0, var(x)==0), 1, var(f) $ (var(x) - 1))))) : Ty.
+                              else x * f (x - 1)
+query: [] ⊢ fix(lam(f, lam(x, if(or(var(x)<0, var(x)==0), 1, var(x) * (var(f) $ (var(x) - 1)))))) : Ty.
 
 term: fix lambda f. lambda x. if x < 0 || x == 0
                               then 0
@@ -260,7 +260,7 @@ query: [] ⊢ let(id, lam(x, var(x)), var(id) $ true) : Ty.
 
 term: let id = λx. x in
       let a = id true in
-      let b = id unit in
-      unit
-query: [] ⊢ let(id, lam(x, var(x)), let(a, var(id) $ true, let(b, var(id) $ unit, unit))) : Ty.
+      let b = id 1 in
+      2
+query: [] ⊢ let(id, lam(x, var(x)), let(a, var(id) $ true, let(b, var(id) $ 1, 2))) : Ty.
 */
